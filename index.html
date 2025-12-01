@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PosloviDE – Posao u Njemačkoj</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+</head>
+
+<body>
+<header class="top-bar">
+  <div class="logo">
+    <span class="flag">🇩🇪</span>
+    <span>PosloviDE</span>
+  </div>
+  <nav>
+    <a href="#hero" class="nav-link">Poslovi</a>
+    <a href="#how" class="nav-link">Kako funkcioniše</a>
+    <a href="#contact" class="nav-link">Za radnike / firme</a>
+    <a href="#admin" class="nav-link" id="nav-admin">Admin</a>
+  </nav>
+</header>
+
+<main>
+  <!-- ========== HERO ========== -->
+  <section id="hero" class="hero">
+    <div class="container hero-content">
+      <h1>Posao u Njemačkoj bez muke</h1>
+      <p>Prijavi se online, a mi te povezujemo sa provjerenim firmama u Njemačkoj, Austriji i Švajcarskoj.</p>
+
+      <div class="search-box">
+        <input id="filter-keyword" type="text" placeholder="Pozicija ili firma (npr. građevina, magacin…)" />
+        <input id="filter-city" type="text" placeholder="Grad (npr. Köln, Bonn…)" />
+        <select id="filter-country">
+          <option value="">Sve države</option>
+          <option value="Njemačka">Njemačka</option>
+          <option value="Austrija">Austrija</option>
+          <option value="Švajcarska">Švajcarska</option>
+        </select>
+        <button id="filter-reset">Resetuj filtere</button>
+      </div>
+
+      <div class="hero-badges">
+        <span>✅ Provjerene firme</span>
+        <span>✅ Besplatna prijava</span>
+        <span>✅ Podrška na našem jeziku</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== POSLOVI ========== -->
+  <section id="jobs" class="section alt">
+    <div class="container">
+      <h2>Aktuelni poslovi u Njemačkoj</h2>
+      <p class="section-subtitle">Oglasi koje firme objave ili koje dodamo preko admin panela.</p>
+
+      <div id="public-jobs" class="jobs-list"></div>
+      <p id="no-results" class="no-results hidden">
+        Trenutno nema poslova za izabrane filtere. Pokušaj sa drugim gradom ili državom.
+      </p>
+    </div>
+  </section>
+
+  <!-- ========== KAKO FUNKCIONIŠE ========== -->
+  <section id="how" class="section">
+    <div class="container">
+      <h2>Kako funkcioniše?</h2>
+      <p class="section-subtitle">Vrlo jednostavno – par koraka do posla u Njemačkoj.</p>
+
+      <div class="steps">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <h3>Popuni prijavu</h3>
+          <p>Pošalješ svoje podatke, iskustvo i u kom gradu želiš da radiš.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <h3>Mi tražimo firmu</h3>
+          <p>Spajamo te sa firmama koje traže radnike za tvoju poziciju.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <h3>Kontakt i dogovor</h3>
+          <p>Firma te kontaktira direktno – dogovarate uslove, platu i smještaj.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">4</div>
+          <h3>Polazak</h3>
+          <p>Uz dogovorene uslove i papire, krećeš na rad u DE / AT / CH.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== KONTAKT / PRIJAVA ========== -->
+  <section id="contact" class="contact-section">
+    <div class="container">
+      <h2 class="section-title">Kontakt / Prijava</h2>
+      <p class="section-subtitle">
+        Ispuni prijavu, a mi te povezujemo sa firmama u Njemačkoj, Austriji i Švajcarskoj.
+      </p>
+
+      <div class="contact-grid">
+        <!-- RADNIK -->
+        <div class="contact-card">
+          <h3>Tražim posao u Njemačkoj</h3>
+          <p class="card-subtitle">Popuni podatke, javićemo ti se na WhatsApp ili e-mail.</p>
+
+          <form id="worker-form" class="contact-form">
+            <div class="form-group">
+              <label>Ime i prezime</label>
+              <input type="text" id="worker-name" required placeholder="Marko Marković" />
+            </div>
+
+            <div class="form-group two-cols">
+              <div>
+                <label>Telefon / WhatsApp</label>
+                <input type="tel" id="worker-phone" required placeholder="+49..." />
+              </div>
+              <div>
+                <label>E-mail (opciono)</label>
+                <input type="email" id="worker-email" placeholder="email@..." />
+              </div>
+            </div>
+
+            <div class="form-group two-cols">
+              <div>
+                <label>Pozicija</label>
+                <input type="text" id="worker-position" placeholder="građevina, magacin…" />
+              </div>
+              <div>
+                <label>Grad</label>
+                <input type="text" id="worker-city" placeholder="Köln, Bonn…" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Iskustvo / napomena</label>
+              <textarea id="worker-experience" rows="3" placeholder="Kratko opiši iskustvo, papire, kada možeš da dođeš…"></textarea>
+            </div>
+
+            <div class="form-group checkbox-row">
+              <label>
+                <input type="checkbox" id="worker-papers" />
+                Imam EU papire ili vizu
+              </label>
+            </div>
+
+            <button type="submit" class="btn-primary full-width">Pošalji prijavu</button>
+            <p id="worker-message" class="form-message"></p>
+          </form>
+        </div>
+
+        <!-- FIRMA -->
+        <div class="contact-card">
+          <h3>Treba mi radnik (firma / poslodavac)</h3>
+          <p class="card-subtitle">Ako tražiš radnike za firmu u Njemačkoj, pošalji upit.</p>
+
+          <form id="company-form" class="contact-form">
+            <div class="form-group">
+              <label>Naziv firme</label>
+              <input type="text" id="company-name" required placeholder="Firma SD" />
+            </div>
+
+            <div class="form-group two-cols">
+              <div>
+                <label>Kontakt osoba</label>
+                <input type="text" id="company-person" required placeholder="Ime i prezime" />
+              </div>
+              <div>
+                <label>Telefon / WhatsApp</label>
+                <input type="tel" id="company-phone" required placeholder="+49..." />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>E-mail</label>
+              <input type="email" id="company-email" required placeholder="firma@mail.com" />
+            </div>
+
+            <div class="form-group two-cols">
+              <div>
+                <label>Grad</label>
+                <input type="text" id="company-city" placeholder="Köln, Bonn…" />
+              </div>
+              <div>
+                <label>Broj radnika</label>
+                <input type="number" id="company-count" min="1" placeholder="5" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Opis posla / uslovi</label>
+              <textarea id="company-notes" rows="3" placeholder="Satnica, smještaj, ugovor…"></textarea>
+            </div>
+
+            <button type="submit" class="btn-secondary full-width">Pošalji upit</button>
+            <p id="company-message" class="form-message"></p>
+          </form>
+
+          <div class="contact-extra">
+            <p><strong>Direktan kontakt (WhatsApp):</strong></p>
+            <p class="contact-whatsapp">📲 +49 152 23000800</p>
+            <p class="contact-note">
+              Pošalji poruku: <strong>„PosloviDE + ime + pozicija“</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ADMIN PANEL ========== -->
+  <section id="admin" class="admin-section">
+    <div class="container">
+      <h2>Admin Panel</h2>
+      <p class="section-subtitle">
+        Samo za internu upotrebu – dodavanje i uređivanje poslova koji se pojavljuju gore na listi.
+      </p>
+
+      <div class="admin-form">
+        <input id="job-title" type="text" placeholder="Naziv posla (npr. Pomoćni radnik)" />
+        <input id="job-company" type="text" placeholder="Firma (npr. DE Bau GmbH)" />
+        <input id="job-location" type="text" placeholder="Grad (npr. Köln, Bonn…)" />
+        <select id="job-country">
+          <option value="Njemačka">Njemačka</option>
+          <option value="Austrija">Austrija</option>
+          <option value="Švajcarska">Švajcarska</option>
+          <option value="Švajcarska">Luxemburg</option>
+        </select>
+        <input id="job-salary" type="text" placeholder="Satnica (14–17€/h)" />
+        <textarea id="job-description" placeholder="Opis posla / smještaj / ugovor…"></textarea>
+
+        <button id="add-job">Dodaj posao</button>
+        <button id="clear-jobs" class="btn-danger" type="button">Obriši sve (resetuj na početne)</button>
+      </div>
+
+      <h3>Lista poslova</h3>
+      <div id="job-list"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  © PosloviDE – Sve prava zadržana
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
