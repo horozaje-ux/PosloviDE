@@ -95,8 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         country === 'all' || job.country.toLowerCase() === country.toLowerCase();
 
       const text =
-        (job.title + job.company + job.location + job.description)
-          .toLowerCase();
+        (job.title + job.company + job.location + job.description).toLowerCase();
 
       const matchesTerm = !term || text.includes(term);
 
@@ -398,7 +397,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const companyMessage = document.getElementById('company-message');
 
   async function sendToFormspree(payload, messageBox) {
-    // zamijeni svojim ID-jem
     const endpoint = 'https://formspree.io/f/xkgdbqnj';
 
     try {
@@ -476,24 +474,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ===== MOBILNI MENI (hamburger) =====
-const navToggle = document.querySelector('.nav-toggle');
-const navLinks = document.querySelector('.nav-links');
+  // =========================
+  // 8. MOBILNI MENI (hamburger)
+  // =========================
 
-if (navToggle && navLinks) {
-  navToggle.addEventListener('click', function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-    navLinks.classList.toggle('nav-open');
-  });
+  const navToggle = document.querySelector('.nav-toggle');
+  const navLinks = document.querySelector('.nav-links');
 
-  // klik van menija zatvara meni
-  document.addEventListener('click', function (e) {
-    if (!navLinks.contains(e.target) && !navToggle.contains(e.target)) {
-      navLinks.classList.remove('nav-open');
-    }
-  });
-}
+  if (navToggle && navLinks) {
+    navToggle.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      navLinks.classList.toggle('nav-open');
+    });
+
+    // klik van menija zatvara meni
+    document.addEventListener('click', function (e) {
+      if (!navLinks.contains(e.target) && !navToggle.contains(e.target)) {
+        navLinks.classList.remove('nav-open');
+      }
+    });
+  }
 
   // =========================
   // 9. ADMIN LOGIN OVERLAY
@@ -565,19 +566,3 @@ if (navToggle && navLinks) {
     });
   }
 });
-// 8. MOBILNI MENI (hamburger)
-const navToggle = document.querySelector('.nav-toggle');
-const navLinks = document.querySelector('.nav-links');
-
-if (navToggle && navLinks) {
-  navToggle.addEventListener('click', function (e) {
-    e.stopPropagation();
-    navLinks.classList.toggle('nav-open');
-  });
-
-  document.addEventListener('click', function (e) {
-    if (!navLinks.contains(e.target) && !navToggle.contains(e.target)) {
-      navLinks.classList.remove('nav-open');
-    }
-  });
-}
