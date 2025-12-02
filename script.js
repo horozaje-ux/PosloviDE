@@ -1,104 +1,118 @@
-// ============ POMOĆNE FUNKCIJE ============
+// ===== KONFIG =====
+const ADMIN_PASSWORD = "1234"; // promijeni po želji
+const STORAGE_KEY = "posloviDE_jobs_v1";
 
-function $(id) {
-  return document.getElementById(id);
+// ===== GLOBALNO STANJE =====
+let jobs = [];
+let isAdmin = false;
+
+// ===== POMOĆNE FUNKCIJE =====
+function loadJobsFromStorage() {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (!stored) return null;
+
+  try {
+    return JSON.parse(stored);
+  } catch {
+    return null;
+  }
 }
 
-// ============ PODACI O POSLOVIMA ============
+function saveJobsToStorage() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(jobs));
+}
 
-const DEFAULT_JOBS = [
+// Default poslovi – možeš mijenjati
+const defaultJobs = [
   {
-    id: 1,
-    title: "Pomoćni radnik na građevini",
-    company: "DE Bau GmbH",
-    city: "Köln",
+    id: "1",
+    title: "Pomoćni radnik",
+    company: "Firma SD",
     country: "Njemačka",
-    salary: "14–16€/h",
-    description: "Rad na gradilištu, smještaj obezbijeđen, prijava i ugovor."
+    location: "Köln, Bonn",
+    salary: "14–17€ / h",
+    description: "Građevina, rad na fasadama, dugoročni ugovor. Smještaj organizovan.",
+    contact: "WhatsApp: +49 152 23000800"
   },
   {
-    id: 2,
+    id: "2",
     title: "Radnik u magacinu",
-    company: "Logistik Zentrum",
-    city: "Bonn",
+    company: "Logistic DE",
     country: "Njemačka",
-    salary: "13.5–15€/h",
-    description: "Sortiranje robe, pakovanje, mogući noćni smjenovi."
+    location: "Duisburg",
+    salary: "13.50€ / h + bonus",
+    description: "Sortiranje paketa, rad u smjenama, njemački jezik nije uslov.",
+    contact: "Email: job@logistic.de"
   },
   {
-    id: 3,
-    title: "Radnik u hotelu (sobar/ica)",
-    company: "Alpen Hotel",
-    city: "Innsbruck",
+    id: "3",
+    title: "Konobar / konobarica",
+    company: "AlpenHotel",
     country: "Austrija",
-    salary: "1500–1800€ neto",
-    description: "Čišćenje soba, rad u turističkom centru, smještaj obezbijeđen."
+    location: "Tirol",
+    salary: "1550–1700€ + bakšiš",
+    description: "Sezonski posao u hotelu, hrana i smještaj obezbijeđeni.",
+    contact: "WhatsApp: +43 600 000000"
   }
 ];
 
-let jobs = [];
-
-// učitaj iz localStorage ili postavi default
-function loadJobs() {
-  try {
-    const saved = localStorage.getItem("poslovide-jobs");
-    if (saved) {
-      jobs = JSON.parse(saved);
-    } else {
-      jobs = DEFAULT_JOBS.slice();
-      saveJobs();
-    }
-  } catch (e) {
-    console.error("Greška pri čitanju poslova:", e);
-    jobs = DEFAULT_JOBS.slice();
+function initJobs() {
+  const stored = loadJobsFromStorage();
+  if (stored && Array.isArray(stored) && stored.length > 0) {
+    jobs = stored;
+  } else {
+    jobs = defaultJobs;
+    saveJobsToStorage();
   }
 }
 
-function saveJobs() {
-  try {
-    localStorage.setItem("poslovide-jobs", JSON.stringify(jobs));
-  } catch (e) {
-    console.error("Greška pri snimanju poslova:", e);
+// ===== RENDER POSLOVA =====
+function jobCountryFlag(country) {
+  switch (country) {
+    case "Njemačka":
+      return "🇩🇪";
+    case "Austrija":
+      return "🇦🇹";
+    case "Švajcarska":
+      return "🇨🇭";
+    case "Belgija":
+      return "🇧🇪";
+    case "Luksemburg":
+      return "🇱🇺";
+    default:
+      return "🌍";
   }
 }
 
-// ============ RENDER POSLOVA (JAVNI DIO) ============
+function renderJobs() {
+  const list = document.getElementById("jobs-list");
+  const noResults = document.getElementById("no-results");
+  const searchValue = document
+    .getElementById("search-input")
+    .value.toLowerCase()
+    .trim();
+  const countryValue = document.getElementById("country-filter").value;
 
-function getFilteredJobs() {
-  const kw = ($("filter-keyword")?.value || "").toLowerCase();
-  const city = ($("filter-city")?.value || "").toLowerCase();
-  const country = $("filter-country")?.value || "";
-
-  return jobs.filter((job) => {
-    const matchesKw =
-      !kw ||
-      job.title.toLowerCase().includes(kw) ||
-      job.company.toLowerCase().includes(kw) ||
-      job.description.toLowerCase().includes(kw);
-
-    const matchesCity =
-      !city || job.city.toLowerCase().includes(city);
-
-    const matchesCountry =
-      !country || job.country === country;
-
-    return matchesKw && matchesCity && matchesCountry;
-  });
-}
-
-function renderPublicJobs() {
-  const list = $("public-jobs");
-  const noRes = $("no-results");
-  if (!list) return;
-
-  const filtered = getFilteredJobs();
   list.innerHTML = "";
 
-  if (!filtered.length) {
-    if (noRes) noRes.classList.remove("hidden");
+  const filtered = jobs.filter((job) => {
+    const matchesCountry =
+      countryValue === "all" || job.country === countryValue;
+
+    const text =
+      (job.title + job.company + job.location + job.country + job.description)
+        .toLowerCase();
+
+    const matchesSearch = !searchValue || text.includes(searchValue);
+
+    return matchesCountry && matchesSearch;
+  });
+
+  if (filtered.length === 0) {
+    noResults.classList.remove("hidden");
     return;
   } else {
-    if (noRes) noRes.classList.add("hidden");
+    noResults.classList.add("hidden");
   }
 
   filtered.forEach((job) => {
@@ -106,63 +120,64 @@ function renderPublicJobs() {
     card.className = "job-card";
 
     card.innerHTML = `
-      <h3>${job.title}</h3>
-      <p class="job-meta"><strong>Firma:</strong> ${job.company}</p>
-      <p class="job-meta"><strong>Lokacija:</strong> ${job.city} • ${job.country}</p>
-      <p class="job-salary"><strong>Satnica / plata:</strong> ${job.salary}</p>
-      <p>${job.description}</p>
+      <div class="job-header">
+        <div>
+          <div class="job-title">${job.title}</div>
+          <div class="job-meta">${job.company} • ${job.location}</div>
+        </div>
+        <div class="job-country-pill">
+          ${jobCountryFlag(job.country)} ${job.country}
+        </div>
+      </div>
+      <div class="job-salary">${job.salary || ""}</div>
+      <div class="job-description">
+        ${job.description || ""}
+      </div>
       <div class="job-actions">
-        <small>Javi se preko kontakt forme.</small>
-        <button type="button" data-title="${job.title}">
-          Zainteresovan sam
-        </button>
+        <button>Zahtjev / prijava</button>
+        <div class="job-contact">${job.contact || ""}</div>
       </div>
     `;
 
+    // Klik na dugme → skrol na kontakt
     const btn = card.querySelector("button");
     btn.addEventListener("click", () => {
-      const workerName = $("worker-name")?.value || "";
-      const baseText = `Zdravo, interesuje me pozicija: "${job.title}" u firmi ${job.company}.`;
-      let text = baseText;
-      if (workerName) {
-        text = `${workerName} – ${baseText}`;
-      }
-      const url =
-        "https://wa.me/4915223000800?text=" +
-        encodeURIComponent(text);
-      window.open(url, "_blank");
+      document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
     });
 
     list.appendChild(card);
   });
 }
 
-// ============ ADMIN – LISTA POSLOVA ============
-
+// ===== ADMIN RENDER =====
 function renderAdminJobs() {
-  const container = $("job-list");
+  const container = document.getElementById("admin-jobs-container");
   if (!container) return;
 
   container.innerHTML = "";
+
+  if (jobs.length === 0) {
+    container.innerHTML = "<p>Još nema oglasa.</p>";
+    return;
+  }
+
   jobs.forEach((job) => {
     const item = document.createElement("div");
-    item.className = "job-item";
+    item.className = "admin-job-item";
 
     item.innerHTML = `
-      <div class="job-item-title">${job.title}</div>
-      <div><strong>Firma:</strong> ${job.company}</div>
-      <div><strong>Lokacija:</strong> ${job.city} • ${job.country}</div>
-      <div><strong>Satnica:</strong> ${job.salary}</div>
-      <div>${job.description}</div>
-      <button class="btn-danger delete-job" data-id="${job.id}">Obriši</button>
+      <h4>${job.title}</h4>
+      <p><strong>Firma:</strong> ${job.company}</p>
+      <p><strong>Država:</strong> ${job.country}</p>
+      <p><strong>Lokacija:</strong> ${job.location}</p>
+      <p><strong>Satnica:</strong> ${job.salary || ""}</p>
+      <button class="delete-job">Obriši</button>
     `;
 
-    const delBtn = item.querySelector(".delete-job");
-    delBtn.addEventListener("click", () => {
-      const id = Number(delBtn.getAttribute("data-id"));
-      jobs = jobs.filter((j) => j.id !== id);
-      saveJobs();
-      renderPublicJobs();
+    item.querySelector(".delete-job").addEventListener("click", () => {
+      jobs = jobs.filter((j) => j.id !== job.id);
+      saveJobsToStorage();
+      renderJobs();
       renderAdminJobs();
     });
 
@@ -170,249 +185,164 @@ function renderAdminJobs() {
   });
 }
 
-// dodavanje posla iz admin forme
-function setupAdminForm() {
-  const btn = $("add-job");
-  if (!btn) return;
+// ===== ADMIN LOGIN / LOGOUT =====
+function updateAdminUI() {
+  const loginBox = document.getElementById("admin-login");
+  const panel = document.getElementById("admin-panel");
 
-  btn.addEventListener("click", () => {
-    const title = $("job-title").value.trim();
-    const company = $("job-company").value.trim();
-    const city = $("job-location").value.trim();
-    const country = $("job-country").value;
-    const salary = $("job-salary").value.trim();
-    const description = $("job-description").value.trim();
+  if (isAdmin) {
+    loginBox.classList.add("hidden");
+    panel.classList.remove("hidden");
+  } else {
+    loginBox.classList.remove("hidden");
+    panel.classList.add("hidden");
+  }
+}
 
-    if (!title || !company || !city || !salary) {
-      alert("Unesi najmanje naziv posla, firmu, lokaciju i satnicu.");
+// ===== INIT =====
+document.addEventListener("DOMContentLoaded", () => {
+  initJobs();
+  renderJobs();
+  renderAdminJobs();
+
+  // --- FILTERI ---
+  const searchInput = document.getElementById("search-input");
+  const countryFilter = document.getElementById("country-filter");
+  const resetBtn = document.getElementById("filter-reset");
+
+  searchInput.addEventListener("input", renderJobs);
+  countryFilter.addEventListener("change", renderJobs);
+  resetBtn.addEventListener("click", () => {
+    searchInput.value = "";
+    countryFilter.value = "all";
+    renderJobs();
+  });
+
+  // --- FORM: RADNIK ---
+  const workerForm = document.getElementById("worker-form");
+  const workerMessage = document.getElementById("worker-message");
+
+  workerForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    workerMessage.textContent =
+      "Hvala! Tvoja prijava je zabilježena – kontaktiraćemo te / prosleđujemo firmama.";
+    workerMessage.classList.add("success");
+    workerForm.reset();
+  });
+
+  // --- FORM: FIRMA ---
+  const companyForm = document.getElementById("company-form");
+  const companyMessage = document.getElementById("company-message");
+
+  companyForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    companyMessage.textContent =
+      "Hvala! Javićemo se u najkraćem roku da dogovorimo detalje o radnicima.";
+    companyMessage.classList.add("success");
+    companyForm.reset();
+  });
+
+  // --- ADMIN LOGIN ---
+  const adminLoginBtn = document.getElementById("admin-login-btn");
+  const adminPwdInput = document.getElementById("admin-password");
+  const adminLoginMsg = document.getElementById("admin-login-message");
+
+  adminLoginBtn.addEventListener("click", () => {
+    const value = adminPwdInput.value.trim();
+    if (value === ADMIN_PASSWORD) {
+      isAdmin = true;
+      localStorage.setItem("posloviDE_isAdmin", "1");
+      adminLoginMsg.textContent = "";
+      adminPwdInput.value = "";
+      updateAdminUI();
+      renderAdminJobs();
+      document
+        .getElementById("admin-panel")
+        .scrollIntoView({ behavior: "smooth" });
+    } else {
+      adminLoginMsg.textContent = "Pogrešna šifra.";
+      adminLoginMsg.classList.add("error");
+    }
+  });
+
+  // auto login ako ima flag u storage
+  if (localStorage.getItem("posloviDE_isAdmin") === "1") {
+    isAdmin = true;
+    updateAdminUI();
+  } else {
+    updateAdminUI();
+  }
+
+  // --- ADMIN LOGOUT ---
+  const adminLogoutBtn = document.getElementById("admin-logout");
+  adminLogoutBtn.addEventListener("click", () => {
+    isAdmin = false;
+    localStorage.removeItem("posloviDE_isAdmin");
+    updateAdminUI();
+  });
+
+  // --- ADMIN DODAVANJE POSLA ---
+  const adminForm = document.getElementById("admin-form");
+
+  adminForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const title = document.getElementById("job-title").value.trim();
+    const company = document.getElementById("job-company").value.trim();
+    const location = document.getElementById("job-location").value.trim();
+    const country = document.getElementById("job-country").value;
+    const salary = document.getElementById("job-salary").value.trim();
+    const contact = document.getElementById("job-contact").value.trim();
+    const description = document
+      .getElementById("job-description")
+      .value.trim();
+
+    if (!title || !company || !location || !country) {
+      alert("Popuni obavezna polja (naziv, firma, lokacija, država).");
       return;
     }
 
-    const job = {
-      id: Date.now(),
+    const newJob = {
+      id: Date.now().toString(),
       title,
       company,
-      city,
+      location,
       country,
       salary,
-      description: description || "Detalji po dogovoru."
+      contact,
+      description
     };
 
-    jobs.push(job);
-    saveJobs();
-
-    $("job-title").value = "";
-    $("job-company").value = "";
-    $("job-location").value = "";
-    $("job-salary").value = "";
-    $("job-description").value = "";
-
-    renderPublicJobs();
+    jobs.unshift(newJob); // novi na vrh
+    saveJobsToStorage();
+    renderJobs();
     renderAdminJobs();
+    adminForm.reset();
+    alert("Posao je dodan.");
   });
-
-  const clearBtn = $("clear-jobs");
-  if (clearBtn) {
-    clearBtn.addEventListener("click", () => {
-      if (
-        confirm(
-          "Sigurno želiš da obrišeš sve poslove i vratiš na početni spisak?"
-        )
-      ) {
-        jobs = DEFAULT_JOBS.slice();
-        saveJobs();
-        renderPublicJobs();
-        renderAdminJobs();
-      }
-    });
-  }
-}
-
-// ============ FILTERI (HERO) ============
-
-function setupFilters() {
-  const kw = $("filter-keyword");
-  const city = $("filter-city");
-  const country = $("filter-country");
-  const resetBtn = $("filter-reset");
-
-  [kw, city, country].forEach((el) => {
-    if (el) {
-      el.addEventListener("input", () => {
-        renderPublicJobs();
-      });
-    }
-  });
-
-  if (resetBtn) {
-    resetBtn.addEventListener("click", () => {
-      if (kw) kw.value = "";
-      if (city) city.value = "";
-      if (country) country.value = "";
-      renderPublicJobs();
-    });
-  }
-}
-
-// ============ FORME – RADNIK I FIRMA ============
-
-function setupForms() {
-  const workerForm = $("worker-form");
-  const companyForm = $("company-form");
-
-  if (workerForm) {
-    workerForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const name = $("worker-name").value.trim();
-      const phone = $("worker-phone").value.trim();
-      const email = $("worker-email").value.trim();
-      const position = $("worker-position").value.trim();
-      const city = $("worker-city").value.trim();
-      const exp = $("worker-experience").value.trim();
-      const papers = $("worker-papers").checked ? "DA" : "NE";
-
-      if (!name || !phone) {
-        showMessage(
-          "worker-message",
-          "Molimo unesi ime i telefon.",
-          "error"
-        );
-        return;
-      }
-
-      const body = `
-Ime i prezime: ${name}
-Telefon: ${phone}
-E-mail: ${email || "nema"}
-Pozicija: ${position || "n/a"}
-Grad: ${city || "n/a"}
-Iskustvo / napomena: ${exp || "n/a"}
-EU papiri / viza: ${papers}
-      `;
-
-      const mailto =
-        "mailto:horozaje@hotmail.com" +
-        "?subject=" +
-        encodeURIComponent("Nova prijava – PosloviDE") +
-        "&body=" +
-        encodeURIComponent(body);
-
-      window.location.href = mailto;
-      showMessage(
-        "worker-message",
-        "Prijava je poslata. Javićemo ti se u najkraćem roku.",
-        "success"
-      );
-      workerForm.reset();
-    });
-  }
-
-  if (companyForm) {
-    companyForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const name = $("company-name").value.trim();
-      const person = $("company-person").value.trim();
-      const phone = $("company-phone").value.trim();
-      const email = $("company-email").value.trim();
-      const city = $("company-city").value.trim();
-      const count = $("company-count").value.trim();
-      const notes = $("company-notes").value.trim();
-
-      if (!name || !person || !phone || !email) {
-        showMessage(
-          "company-message",
-          "Molimo unesi naziv firme, kontakt osobu, telefon i e-mail.",
-          "error"
-        );
-        return;
-      }
-
-      const body = `
-Firma: ${name}
-Kontakt osoba: ${person}
-Telefon: ${phone}
-E-mail: ${email}
-Grad: ${city || "n/a"}
-Broj radnika: ${count || "n/a"}
-Opis posla / uslovi: ${notes || "n/a"}
-      `;
-
-      const mailto =
-        "mailto:horozaje@hotmail.com" +
-        "?subject=" +
-        encodeURIComponent("Nova firma – PosloviDE") +
-        "&body=" +
-        encodeURIComponent(body);
-
-      window.location.href = mailto;
-      showMessage(
-        "company-message",
-        "Upit je poslat. Javićemo ti se vrlo brzo.",
-        "success"
-      );
-      companyForm.reset();
-    });
-  }
-}
-
-function showMessage(id, text, type) {
-  const el = $(id);
-  if (!el) return;
-  el.textContent = text;
-  el.classList.remove("success", "error");
-  el.classList.add(type);
-}
-
-// ============ ADMIN LOGIN ============
-
-let isAdmin = false;
-
-function setupAdminLogin() {
-  const navAdmin = $("nav-admin");
-  const adminSection = $("admin");
-
-  if (!navAdmin || !adminSection) return;
-
-  // sakrij admin sekciju dok se ne uloguje
-  adminSection.style.display = "none";
-
-  navAdmin.addEventListener("click", (e) => {
-    e.preventDefault();
-    if (!isAdmin) {
-      const pwd = prompt("Unesi admin šifru:");
-      if (pwd === "1234") {
-        isAdmin = true;
-        adminSection.style.display = "block";
-        adminSection.scrollIntoView({ behavior: "smooth" });
-      } else if (pwd !== null) {
-        alert("Pogrešna šifra.");
-      }
-    } else {
-      adminSection.scrollIntoView({ behavior: "smooth" });
-    }
-  });
-}
-
-// ============ SERVICE WORKER ============
-
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("./service-worker.js")
-      .catch((err) => console.log("SW error:", err));
-  });
-}
-
-// ============ INIT ============
-
-document.addEventListener("DOMContentLoaded", () => {
-  loadJobs();
-  renderPublicJobs();
-  renderAdminJobs();
-  setupAdminForm();
-  setupFilters();
-  setupForms();
-  setupAdminLogin();
 });
+// MOBILE NAV – hamburger meni
+document.addEventListener("DOMContentLoaded", () => {
+  const navToggle = document.querySelector(".nav-toggle");
+  if (navToggle) {
+    navToggle.addEventListener("click", () => {
+      document.body.classList.toggle("nav-open");
+    });
+
+    // Zatvori meni kad klikneš na link
+    document.querySelectorAll(".nav-links a").forEach((link) => {
+      link.addEventListener("click", () => {
+        document.body.classList.remove("nav-open");
+      });
+    });
+  }
+});
+// Hamburger meni
+const toggle = document.querySelector(".nav-toggle");
+const navLinks = document.querySelector(".nav-links");
+
+if (toggle) {
+    toggle.addEventListener("click", () => {
+        navLinks.classList.toggle("open");
+    });
+}
