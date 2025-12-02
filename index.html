@@ -8,7 +8,7 @@
   <link rel="manifest" href="manifest.json" />
 </head>
 <body>
-  <!-- ADMIN LOGIN OVERLAY (zaključava admin dio dok se ne uloguješ) -->
+  <!-- ADMIN LOGIN OVERLAY (samo za vlasnika) -->
   <div id="admin-login-overlay" class="admin-login-overlay">
     <div class="admin-login-box">
       <h2>Admin prijava</h2>
@@ -49,7 +49,8 @@
       <a href="#jobs">Poslovi</a>
       <a href="#countries">Države</a>
       <a href="#contact">Kontakt</a>
-      <a href="#admin">Admin</a>
+      <!-- Admin link otvara login overlay -->
+      <a href="#" id="admin-open-link">Admin</a>
     </nav>
   </header>
 
@@ -258,7 +259,7 @@
     </div>
   </section>
 
-  <!-- ADMIN DASHBOARD (radnici + firme) -->
+  <!-- ADMIN DASHBOARD (radnici + firme) – SKRIVEN DOK SE NE ULOGUJEŠ -->
   <section id="admin" class="section admin-section hidden">
     <div class="section-inner">
       <div class="admin-header">
@@ -450,7 +451,7 @@
     </div>
   </section>
 
-  <!-- ADMIN ZONA – oglasi za poslove (dodavanje poslova) -->
+  <!-- ADMIN ZONA – oglasi za poslove (dodavanje poslova) – SKRIVENA DOK SE NE ULOGUJEŠ -->
   <section class="section alt hidden" id="admin-jobs">
     <h2>Admin – oglasi za posao</h2>
     <p class="section-subtitle">
@@ -500,6 +501,7 @@
     © PosloviDE – Sva prava zadržana
   </footer>
 
-  <script src="script.js"></script>
+  <!-- verzija JS-a da razbije keš -->
+  <script src="script.js?v=2"></script>
 </body>
 </html>
