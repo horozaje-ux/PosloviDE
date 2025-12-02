@@ -2,7 +2,7 @@
 // KONFIG
 // =======================
 const ADMIN_USERNAME = "admin";
-const ADMIN_PASSWORD = "1234";
+const ADMIN_PASSWORD = "sansa123";
 const ADMIN_LOGIN_KEY = "posloviDE_admin_logged";
 
 const STORAGE_KEY_JOBS = "posloviDE_jobs_v1";
@@ -41,7 +41,7 @@ const defaultJobs = [
     salary: "14–17€ / h",
     description:
       "Građevina, rad na fasadama, dugoročni ugovor. Smještaj organizovan.",
-    contact: "WhatsApp: +49 152 23000800",
+    contact: "WhatsApp: +38269200250",
   },
   {
     id: "2",
@@ -52,7 +52,7 @@ const defaultJobs = [
     salary: "13.50€ / h + bonus",
     description:
       "Sortiranje paketa, rad u smjenama, njemački jezik nije uslov.",
-    contact: "Email: job@logistic.de",
+    contact: "Email: horozaje@hotmail.com",
   },
   {
     id: "3",
@@ -63,7 +63,7 @@ const defaultJobs = [
     salary: "1550–1700€ + bakšiš",
     description:
       "Sezonski posao u hotelu, hrana i smještaj obezbijeđeni.",
-    contact: "WhatsApp: +43 600 000000",
+    contact: "WhatsApp: +38269200250",
   },
 ];
 
