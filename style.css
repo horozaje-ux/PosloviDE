@@ -1702,8 +1702,14 @@ a {
   background: #e5e7eb;
 }
 
-/* MOBILNI PRIKAZ */
+/* ✅ Mobilni prikaz menija */
 @media (max-width: 768px) {
+  /* dugme da se vidi na telefonu */
+  .nav-toggle {
+    display: flex;
+  }
+
+  /* skrivene linkove pravimo kao popup ispod headera */
   .nav-links {
     position: fixed;
     top: 64px;
@@ -1712,24 +1718,20 @@ a {
     background: rgba(15, 23, 42, 0.98);
     padding: 16px 20px 20px;
     border-radius: 16px;
+    display: none;           /* ⬅⬅ po defaultu sakriveno */
     flex-direction: column;
-    text-align: left;
     gap: 16px;
-
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(-8px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
-    z-index: 60; /* iznad sadržaja */
+    text-align: left;
+    box-shadow: 0 18px 35px rgba(15, 23, 42, 0.8);
+    z-index: 9999;           /* uvijek iznad svega */
   }
 
+  .nav-links a {
+    padding: 4px 0;
+  }
+
+  /* kada JS doda .nav-open – prikaži meni */
   .nav-links.nav-open {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateY(0);
-  }
-
-  .nav-toggle {
     display: flex;
   }
 }
