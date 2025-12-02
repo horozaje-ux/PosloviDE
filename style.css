@@ -1675,37 +1675,70 @@ a {
   border-radius: 999px;
   background: #e5e7eb;
 }
+/* === FINALNA VERZIJA MOBILNOG MENIJA (FIX) === */
 
-/* ✅ Mobilni prikaz menija */
+/* Osnovni izgled nav-linkova na većim ekranima ostaje kao što je gore */
+
+/* Mobilna verzija menija */
 @media (max-width: 768px) {
-  /* dugme da se vidi na telefonu */
-  .nav-toggle {
+
+  /* Header – ostaje gore, kao app bar */
+  .top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding: 0.75rem 6vw;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  /* skrivene linkove pravimo kao popup ispod headera */
+  /* Hamburger dugme – da se sigurno vidi na telefonu */
+  .nav-toggle {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    width: 38px;
+    height: 32px;
+    border-radius: 999px;
+    border: 1px solid #1f2937;
+    background: #020617;
+    cursor: pointer;
+  }
+
+  .nav-toggle span {
+    width: 18px;
+    height: 2px;
+    border-radius: 999px;
+    background: #e5e7eb;
+  }
+
+  /* Meni – skriven dok nema .nav-open klase */
   .nav-links {
     position: fixed;
     top: 64px;
     right: 16px;
     left: 16px;
-    background: rgba(15, 23, 42, 0.98);
     padding: 16px 20px 20px;
+    background: rgba(15, 23, 42, 0.98);
     border-radius: 16px;
-    display: none;           /* ⬅⬅ po defaultu sakriveno */
+    display: none !important;      /* default sakriveno */
     flex-direction: column;
     gap: 16px;
     text-align: left;
     box-shadow: 0 18px 35px rgba(15, 23, 42, 0.8);
-    z-index: 9999;           /* uvijek iznad svega */
+    z-index: 9999;
   }
 
   .nav-links a {
     padding: 4px 0;
+    font-size: 0.95rem;
   }
 
-  /* kada JS doda .nav-open – prikaži meni */
+  /* Kada JS doda .nav-open NA .nav-links */
   .nav-links.nav-open {
-    display: flex;
+    display: flex !important;
   }
 }
