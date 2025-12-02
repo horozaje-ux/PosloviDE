@@ -640,3 +640,80 @@ document.addEventListener("DOMContentLoaded", () => {
   initAdminJobsForm();
   initAdminAuth();
 });
+/* ===========================
+   1) SLANJE RADNIKA NA EMAIL
+   =========================== */
+document.getElementById("worker-form").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const data = {
+        name: document.getElementById("worker-name").value,
+        phone: document.getElementById("worker-phone").value,
+        email: document.getElementById("worker-email").value,
+        city: document.getElementById("worker-city").value,
+        position: document.getElementById("worker-position").value,
+        experience: document.getElementById("worker-experience").value
+    };
+
+    const messageBox = document.getElementById("worker-message");
+
+    try {
+        const response = await fetch("https://formspree.io/f/xkgdbqnj", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            messageBox.textContent = "✅ Prijava uspješno poslata!";
+            messageBox.classList.add("success");
+
+            this.reset();
+        } else {
+            messageBox.textContent = "❌ Greška, pokušaj ponovo.";
+            messageBox.classList.add("error");
+        }
+    } catch (err) {
+        messageBox.textContent = "❌ Greška u mreži.";
+        messageBox.classList.add("error");
+    }
+});
+
+/* ===========================
+   2) SLANJE FIRME NA EMAIL
+   =========================== */
+document.getElementById("company-form").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const data = {
+        company: document.getElementById("company-name").value,
+        person: document.getElementById("company-person").value,
+        phone: document.getElementById("company-phone").value,
+        email: document.getElementById("company-email").value,
+        city: document.getElementById("company-city").value,
+        profile: document.getElementById("company-profile").value
+    };
+
+    const messageBox = document.getElementById("company-message");
+
+    try {
+        const response = await fetch("https://formspree.io/f/xkgdbqnj", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            messageBox.textContent = "✅ Upit uspješno poslat!";
+            messageBox.classList.add("success");
+
+            this.reset();
+        } else {
+            messageBox.textContent = "❌ Greška, pokušaj ponovo.";
+            messageBox.classList.add("error");
+        }
+    } catch (err) {
+        messageBox.textContent = "❌ Greška u mreži.";
+        messageBox.classList.add("error");
+    }
+});
