@@ -8,26 +8,50 @@
   <link rel="manifest" href="manifest.json" />
 </head>
 <body>
-  <!-- NAVBAR -->
-  <header class="top-bar">
-  <div class="logo">
-    Poslovi<span>DE</span> <span class="flag">🇩🇪</span>
+  <!-- ADMIN LOGIN OVERLAY (zaključava admin dio dok se ne uloguješ) -->
+  <div id="admin-login-overlay" class="admin-login-overlay">
+    <div class="admin-login-box">
+      <h2>Admin prijava</h2>
+      <p>Ovaj dio je samo za vlasnika.</p>
+
+      <form id="admin-login-form">
+        <label>
+          Korisničko ime
+          <input type="text" id="admin-username" placeholder="admin" required />
+        </label>
+        <label>
+          Lozinka
+          <input type="password" id="admin-password" placeholder="••••••" required />
+        </label>
+
+        <button type="submit">Prijavi se</button>
+        <p class="admin-login-hint">
+          Demo podaci: <strong>admin / 1234</strong> (možeš kasnije promijeniti u script.js)
+        </p>
+      </form>
+    </div>
   </div>
 
-  <!-- HAMBURGER dugme za telefon -->
-  <button class="nav-toggle" aria-label="Otvori meni">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
+  <!-- NAVBAR -->
+  <header class="top-bar">
+    <div class="logo">
+      Poslovi<span>DE</span> <span class="flag">🇩🇪</span>
+    </div>
 
-  <nav class="nav-links">
-    <a href="#jobs">Poslovi</a>
-    <a href="#countries">Države</a>
-    <a href="#contact">Kontakt</a>
-    <a href="#admin">Admin</a>
-  </nav>
-</header>
+    <!-- HAMBURGER dugme za telefon -->
+    <button class="nav-toggle" aria-label="Otvori meni">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav class="nav-links">
+      <a href="#jobs">Poslovi</a>
+      <a href="#countries">Države</a>
+      <a href="#contact">Kontakt</a>
+      <a href="#admin">Admin</a>
+    </nav>
+  </header>
 
   <!-- HERO -->
   <section class="hero" id="top">
@@ -80,7 +104,7 @@
     </p>
   </section>
 
-  <!-- SEKCIJA DRŽAVE (samo info blok sa zastavama) -->
+  <!-- SEKCIJA DRŽAVE -->
   <section class="section" id="countries">
     <h2>Gdje tražimo poslove</h2>
     <p class="section-subtitle">
@@ -134,33 +158,36 @@
             <div class="two-cols">
               <div class="form-group">
                 <label>Ime i prezime</label>
-                <input required placeholder="Marko Marković" />
+                <input id="worker-name" required placeholder="Marko Marković" />
               </div>
               <div class="form-group">
                 <label>Telefon / WhatsApp</label>
-                <input required placeholder="+49..." />
+                <input id="worker-phone" required placeholder="+49..." />
               </div>
             </div>
 
             <div class="two-cols">
               <div class="form-group">
                 <label>E-mail (opciono)</label>
-                <input type="email" placeholder="email@mail.com" />
+                <input id="worker-email" type="email" placeholder="email@mail.com" />
               </div>
               <div class="form-group">
                 <label>Država / grad</label>
-                <input placeholder="Njemačka, Köln…" />
+                <input id="worker-city" placeholder="Njemačka, Köln…" />
               </div>
             </div>
 
             <div class="form-group">
               <label>Područje rada</label>
-              <input placeholder="Građevina, magacin, kuvar…" />
+              <input id="worker-position" placeholder="Građevina, magacin, kuvar…" />
             </div>
 
             <div class="form-group">
               <label>Iskustvo / napomena</label>
-              <textarea placeholder="Kratko opiši iskustvo i očekivanja."></textarea>
+              <textarea
+                id="worker-experience"
+                placeholder="Kratko opiši iskustvo i očekivanja."
+              ></textarea>
             </div>
 
             <button type="submit" class="btn-primary full-width">
@@ -177,34 +204,37 @@
           <form class="contact-form" id="company-form">
             <div class="form-group">
               <label>Naziv firme</label>
-              <input required placeholder="Firma SD" />
+              <input id="company-name" required placeholder="Firma SD" />
             </div>
 
             <div class="two-cols">
               <div class="form-group">
                 <label>Kontakt osoba</label>
-                <input required placeholder="Ime i prezime" />
+                <input id="company-person" required placeholder="Ime i prezime" />
               </div>
               <div class="form-group">
                 <label>Telefon / WhatsApp</label>
-                <input required placeholder="+49..." />
+                <input id="company-phone" required placeholder="+49..." />
               </div>
             </div>
 
             <div class="two-cols">
               <div class="form-group">
                 <label>E-mail</label>
-                <input type="email" placeholder="horozaje@hotmail.com" />
+                <input id="company-email" type="email" placeholder="horozaje@hotmail.com" />
               </div>
               <div class="form-group">
                 <label>Država / grad</label>
-                <input placeholder="Köln, Bonn…" />
+                <input id="company-city" placeholder="Köln, Bonn…" />
               </div>
             </div>
 
             <div class="form-group">
               <label>Profil radnika</label>
-              <textarea placeholder="Broj radnika, pozicije, uslovi…"></textarea>
+              <textarea
+                id="company-profile"
+                placeholder="Broj radnika, pozicije, uslovi…"
+              ></textarea>
             </div>
 
             <button type="submit" class="btn-secondary full-width">
@@ -217,7 +247,8 @@
 
       <div class="contact-extra">
         <p class="contact-whatsapp">
-          📲 Direktni kontakt (WhatsApp): <strong>+38269200250</strong> (primjer – zamijeni tvojim)
+          📲 Direktni kontakt (WhatsApp): <strong>+38269200250</strong> (primjer – zamijeni
+          tvojim)
         </p>
         <p class="contact-note">
           Mi nismo poslodavac – povezujemo radnike i firme, i pomažemo da obje strane
@@ -227,27 +258,206 @@
     </div>
   </section>
 
-  <!-- ADMIN ZONA -->
-  <section class="section alt" id="admin">
-    <h2>Admin Panel</h2>
+  <!-- ADMIN DASHBOARD (radnici + firme) -->
+  <section id="admin" class="section admin-section hidden">
+    <div class="section-inner">
+      <div class="admin-header">
+        <div>
+          <h2 class="section-title">Admin panel</h2>
+          <p class="admin-subtitle">Pregled prijava radnika i kompanija</p>
+        </div>
+        <span class="admin-badge">Samo za vlasnika 😊</span>
+      </div>
+
+      <div class="admin-layout">
+        <!-- Sidebar metric cards -->
+        <aside class="admin-sidebar">
+          <div class="admin-card metric-card">
+            <p class="metric-label">Ukupno prijava</p>
+            <p class="metric-value" id="metric-total">0</p>
+            <p class="metric-tag">Radnici + kompanije</p>
+          </div>
+
+          <div class="admin-card metric-card">
+            <p class="metric-label">Radnici spremni za rad</p>
+            <p class="metric-value" id="metric-workers">0</p>
+            <p class="metric-tag">Aktivne prijave</p>
+          </div>
+
+          <div class="admin-card metric-card">
+            <p class="metric-label">Kompanije koje traže radnike</p>
+            <p class="metric-value" id="metric-companies">0</p>
+            <p class="metric-tag">Otvorene pozicije</p>
+          </div>
+
+          <div class="admin-card metric-card">
+            <p class="metric-label">Zadnja prijava</p>
+            <p class="metric-value metric-small" id="metric-last">–</p>
+            <p class="metric-tag">Real time pregled (za kasnije)</p>
+          </div>
+        </aside>
+
+        <!-- Main dashboard area -->
+        <div class="admin-main">
+          <!-- Tabs -->
+          <div class="admin-tabs">
+            <button class="admin-tab active" data-tab="workers">Prijave radnika</button>
+            <button class="admin-tab" data-tab="companies">Prijave kompanija</button>
+          </div>
+
+          <!-- Search & filters -->
+          <div class="admin-filters">
+            <div class="admin-search">
+              <input type="text" id="admin-search" placeholder="Pretraži ime, grad, poziciju..." />
+            </div>
+            <select id="admin-status-filter">
+              <option value="all">Status: svi</option>
+              <option value="new">Novo</option>
+              <option value="in-progress">Kontaktiran</option>
+              <option value="done">Završeno</option>
+            </select>
+          </div>
+
+          <!-- Export dugmad -->
+          <div class="admin-export">
+            <button id="export-workers" class="export-btn">Export radnika (CSV)</button>
+            <button id="export-companies" class="export-btn">Export kompanija (CSV)</button>
+          </div>
+
+          <!-- Workers table -->
+          <div class="admin-table-wrapper" data-panel="workers">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Ime i prezime</th>
+                  <th>Grad</th>
+                  <th>Pozicija</th>
+                  <th>Iskustvo</th>
+                  <th>Status</th>
+                  <th>Akcije</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-status="new" data-id="static-worker-1">
+                  <td>Marko Jovanović</td>
+                  <td>Podgorica</td>
+                  <td>Monter suve gradnje</td>
+                  <td>4+ godine</td>
+                  <td><span class="status-badge status-new">Novo</span></td>
+                  <td class="admin-actions">
+                    <button class="action-btn action-progress">Kontaktiran</button>
+                    <button class="action-btn action-done">Završeno</button>
+                  </td>
+                </tr>
+                <tr data-status="in-progress" data-id="static-worker-2">
+                  <td>Alen Kovačević</td>
+                  <td>Rožaje</td>
+                  <td>Zidar</td>
+                  <td>6+ godina</td>
+                  <td><span class="status-badge status-progress">Kontaktiran</span></td>
+                  <td class="admin-actions">
+                    <button class="action-btn action-done">Završeno</button>
+                  </td>
+                </tr>
+                <tr data-status="done" data-id="static-worker-3">
+                  <td>Nemanja Petrović</td>
+                  <td>Nikšić</td>
+                  <td>Armirač</td>
+                  <td>3 godine</td>
+                  <td><span class="status-badge status-done">Zaposlen</span></td>
+                  <td class="admin-actions">
+                    <button class="action-btn action-restore">Vrati u "Novo"</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Companies table -->
+          <div class="admin-table-wrapper hidden" data-panel="companies">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Kompanija</th>
+                  <th>Grad / zona</th>
+                  <th>Pozicija</th>
+                  <th>Broj radnika</th>
+                  <th>Status</th>
+                  <th>Akcije</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-status="new" data-id="static-company-1">
+                  <td>Firma SD</td>
+                  <td>Koblenz</td>
+                  <td>Monteri</td>
+                  <td>8</td>
+                  <td><span class="status-badge status-new">Novo</span></td>
+                  <td class="admin-actions">
+                    <button class="action-btn action-progress">U obradi</button>
+                    <button class="action-btn action-done">Popunjeno</button>
+                  </td>
+                </tr>
+                <tr data-status="in-progress" data-id="static-company-2">
+                  <td>BauTeam Köln</td>
+                  <td>Köln</td>
+                  <td>Fasaderi</td>
+                  <td>5</td>
+                  <td><span class="status-badge status-progress">U kontaktu</span></td>
+                  <td class="admin-actions">
+                    <button class="action-btn action-done">Popunjeno</button>
+                  </td>
+                </tr>
+                <tr data-status="done" data-id="static-company-3">
+                  <td>Rhein Bau GmbH</td>
+                  <td>Bonn</td>
+                  <td>Armirači</td>
+                  <td>6</td>
+                  <td><span class="status-badge status-done">Popunjeno</span></td>
+                  <td class="admin-actions">
+                    <button class="action-btn action-restore">Otvori ponovo</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Chat / bilješke -->
+          <div class="admin-chat" id="admin-chat">
+            <div class="chat-header">
+              <div>
+                <p class="chat-title">Bilješke / chat za prijavu</p>
+                <p class="chat-subtitle" id="chat-target">Nijedna prijava nije izabrana.</p>
+              </div>
+            </div>
+            <div class="chat-body" id="chat-messages"></div>
+            <form class="chat-form" id="chat-form">
+              <input
+                type="text"
+                id="chat-input"
+                placeholder="Upiši bilješku (vidiš samo ti)..."
+              />
+              <button type="submit">Pošalji</button>
+            </form>
+          </div>
+
+          <p class="admin-note">
+            🔒 Ovo je demo verzija admin panela. Kasnije možemo spojiti sa pravom bazom i
+            loginom (samo ti imaš pristup).
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADMIN ZONA – oglasi za poslove (dodavanje poslova) -->
+  <section class="section alt hidden" id="admin-jobs">
+    <h2>Admin – oglasi za posao</h2>
     <p class="section-subtitle">
-      Ovdje prijavljuješ nove poslove. Ova zona nije vidljiva običnim korisnicima.
+      Ovdje prijavljuješ nove poslove. Zona je vidljiva samo kada si ulogovan kao admin.
     </p>
 
-    <!-- LOGIN -->
-    <div id="admin-login" class="admin-login-box">
-      <p><strong>Admin login</strong></p>
-      <input
-        type="password"
-        id="admin-password"
-        placeholder="Unesi admin šifru (npr. 1234)"
-      />
-      <button id="admin-login-btn">Uloguj se</button>
-      <p class="form-message error" id="admin-login-message"></p>
-    </div>
-
-    <!-- PANEL (skriven dok se ne uloguje) -->
-    <div id="admin-panel" class="admin-panel hidden">
+    <div id="admin-jobs-panel" class="admin-panel">
       <div class="admin-panel-header">
         <h3>Dodaj novi posao</h3>
         <button id="admin-logout" class="btn-outline">Odjava</button>
@@ -287,7 +497,7 @@
   </section>
 
   <footer class="footer">
-    © PosloviDE – Sve prava zadržana
+    © PosloviDE – Sva prava zadržana
   </footer>
 
   <script src="script.js"></script>
