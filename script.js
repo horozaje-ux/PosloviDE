@@ -476,25 +476,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // =========================
-  // 8. MOBILNI MENI (hamburger)
-  // =========================
+  // ===== MOBILNI MENI (hamburger) =====
+const navToggle = document.querySelector('.nav-toggle');
+const navLinks = document.querySelector('.nav-links');
 
-  const navToggle = document.querySelector('.nav-toggle');
-  const navLinks = document.querySelector('.nav-links');
+if (navToggle && navLinks) {
+  navToggle.addEventListener('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    navLinks.classList.toggle('nav-open');
+  });
 
-  if (navToggle && navLinks) {
-    navToggle.addEventListener('click', function (e) {
-      e.stopPropagation();
-      navLinks.classList.toggle('nav-open');
-    });
-
-    document.addEventListener('click', function (e) {
-      if (!navLinks.contains(e.target) && !navToggle.contains(e.target)) {
-        navLinks.classList.remove('nav-open');
-      }
-    });
-  }
+  // klik van menija zatvara meni
+  document.addEventListener('click', function (e) {
+    if (!navLinks.contains(e.target) && !navToggle.contains(e.target)) {
+      navLinks.classList.remove('nav-open');
+    }
+  });
+}
 
   // =========================
   // 9. ADMIN LOGIN OVERLAY
