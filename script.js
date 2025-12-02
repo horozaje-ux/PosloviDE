@@ -717,12 +717,21 @@ document.getElementById("company-form").addEventListener("submit", async functio
         messageBox.classList.add("error");
     }
 });
-// === MOBILNI MENI (hamburger) ===
+// === MOBILNI MENI (hamburger) – NOVO ===
 const navToggle = document.querySelector('.nav-toggle');
 const navLinks = document.querySelector('.nav-links');
 
 if (navToggle && navLinks) {
-  navToggle.addEventListener('click', () => {
+  // Klik na hamburger otvara/zatvara meni
+  navToggle.addEventListener('click', function (e) {
+    e.stopPropagation();              // da klik ne "prođe" dalje
     navLinks.classList.toggle('nav-open');
+  });
+
+  // Klik bilo gdje van menija ga zatvara
+  document.addEventListener('click', function (e) {
+    if (!navLinks.contains(e.target) && !navToggle.contains(e.target)) {
+      navLinks.classList.remove('nav-open');
+    }
   });
 }
