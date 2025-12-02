@@ -1671,3 +1671,36 @@ a {
   font-weight: 600;
   cursor: pointer;
 }
+/* Osnovno za nav-links */
+.nav-links {
+  display: flex;
+  gap: 24px;
+}
+
+/* Mobilni prikaz */
+@media (max-width: 768px) {
+  .nav-links {
+    position: fixed;
+    top: 64px;          /* visina headera otprilike */
+    right: 16px;
+    left: 16px;
+    background: rgba(15, 23, 42, 0.98); /* tamna pozadina */
+    padding: 16px 20px 20px;
+    border-radius: 16px;
+
+    flex-direction: column;
+    gap: 16px;
+    text-align: left;
+
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .nav-links.nav-open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+}

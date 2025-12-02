@@ -717,3 +717,12 @@ document.getElementById("company-form").addEventListener("submit", async functio
         messageBox.classList.add("error");
     }
 });
+// === MOBILNI MENI (hamburger) ===
+const navToggle = document.querySelector('.nav-toggle');
+const navLinks = document.querySelector('.nav-links');
+
+if (navToggle && navLinks) {
+  navToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('nav-open');
+  });
+}
