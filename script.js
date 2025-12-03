@@ -333,20 +333,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const firstRow = document.querySelector('.admin-table tbody tr');
   if (firstRow) {
     setSelectedRow(firstRow);
-    // =========================
+  }
+
+  // =========================
   // 5. NAVIGACIJA – HAMBURGER
   // =========================
 
-  const navToggle =
-    document.querySelector('[data-nav-toggle]') ||
-    document.querySelector('.nav-toggle') ||
-    document.querySelector('#nav-toggle');
-
-  const navMenu =
-    document.querySelector('[data-nav-menu]') ||
-    document.querySelector('.nav-menu') ||
-    document.querySelector('.mobile-nav') ||
-    document.querySelector('.site-nav');
+  const navToggle = document.querySelector('.nav-toggle');
+  const navMenu = document.querySelector('.nav-links');
 
   if (navToggle && navMenu) {
     navToggle.addEventListener('click', () => {
@@ -366,5 +360,85 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // =========================
+  // 6. ADMIN LOGIN / LOGOUT
+  // =========================
+
+  const adminOpenLink = document.getElementById('admin-open-link');
+  const adminLoginOverlay = document.getElementById('admin-login-overlay');
+  const adminLoginForm = document.getElementById('admin-login-form');
+  const adminUsernameInput = document.getElementById('admin-username');
+  const adminPasswordInput = document.getElementById('admin-password');
+  const adminSection = document.getElementById('admin');
+  const adminJobsSection = document.getElementById('admin-jobs');
+  const adminLogoutBtn = document.getElementById('admin-logout');
+
+  // na startu sakrij overlay (za svaki slučaj)
+  if (adminLoginOverlay) {
+    adminLoginOverlay.classList.add('hidden');
+  }
+
+  function openLoginOverlay() {
+    if (adminLoginOverlay) {
+      adminLoginOverlay.classList.remove('hidden');
+    }
+  }
+
+  function closeLoginOverlay() {
+    if (adminLoginOverlay) {
+      adminLoginOverlay.classList.add('hidden');
+    }
+  }
+
+  function showAdminSections() {
+    if (adminSection) adminSection.classList.remove('hidden');
+    if (adminJobsSection) adminJobsSection.classList.remove('hidden');
+  }
+
+  function hideAdminSections() {
+    if (adminSection) adminSection.classList.add('hidden');
+    if (adminJobsSection) adminJobsSection.classList.add('hidden');
+  }
+
+  if (adminOpenLink) {
+    adminOpenLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      openLoginOverlay();
+    });
+  }
+
+  if (adminLoginForm && adminUsernameInput && adminPasswordInput) {
+    const ADMIN_USER = 'admin';
+    const ADMIN_PASS = '1234';
+
+    adminLoginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const user = adminUsernameInput.value.trim();
+      const pass = adminPasswordInput.value.trim();
+
+      if (user === ADMIN_USER && pass === ADMIN_PASS) {
+        closeLoginOverlay();
+        showAdminSections();
+      } else {
+        alert('Pogrešni podaci za prijavu (probaj admin / 1234).');
+      }
+    });
+  }
+
+  if (adminLogoutBtn) {
+    adminLogoutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      hideAdminSections();
+    });
+  }
+
+  // klik van boxa = zatvori overlay
+  if (adminLoginOverlay) {
+    adminLoginOverlay.addEventListener('click', (e) => {
+      if (e.target === adminLoginOverlay) {
+        closeLoginOverlay();
+      }
+    });
   }
 });
