@@ -8,7 +8,9 @@
   <link rel="manifest" href="manifest.json" />
 </head>
 <body>
-  <!-- ADMIN LOGIN OVERLAY (samo za vlasnika) -->
+  <!-- ========================= -->
+  <!-- ADMIN LOGIN OVERLAY -->
+  <!-- ========================= -->
   <div id="admin-login-overlay" class="admin-login-overlay hidden">
     <div class="admin-login-box">
       <h2>Admin prijava</h2>
@@ -32,14 +34,16 @@
     </div>
   </div>
 
+  <!-- ========================= -->
   <!-- NAVBAR -->
+  <!-- ========================= -->
   <header class="top-bar">
     <div class="logo">
       Poslovi<span>DE</span> <span class="flag">🇩🇪</span>
     </div>
 
-    <!-- HAMBURGER dugme za telefon -->
-    <button class="nav-toggle" aria-label="Otvori meni">
+    <!-- HAMBURGER -->
+    <button class="nav-toggle" aria-label="Otvori meni" aria-expanded="false">
       <span></span>
       <span></span>
       <span></span>
@@ -49,12 +53,13 @@
       <a href="#jobs">Poslovi</a>
       <a href="#countries">Države</a>
       <a href="#contact">Kontakt</a>
-      <!-- Admin link otvara login overlay -->
       <a href="#" id="admin-open-link">Admin</a>
     </nav>
   </header>
 
+  <!-- ========================= -->
   <!-- HERO -->
+  <!-- ========================= -->
   <section class="hero" id="top">
     <div class="hero-content">
       <h1>Posao u Njemačkoj bez muke</h1>
@@ -71,14 +76,15 @@
     </div>
   </section>
 
-  <!-- SEKCIJA POSLOVA -->
+  <!-- ========================= -->
+  <!-- POSLOVI -->
+  <!-- ========================= -->
   <section class="section alt" id="jobs">
     <h2>Aktuelni poslovi</h2>
     <p class="section-subtitle">
       Filtriraj poslove po državi ili pretraži po nazivu firme, gradu ili poziciji.
     </p>
 
-    <!-- FILTERI -->
     <div class="jobs-filters">
       <input
         type="text"
@@ -96,16 +102,16 @@
       <button id="filter-reset">Reset filtera</button>
     </div>
 
-    <!-- LISTA POSLOVA -->
-    <div id="jobs-list" class="jobs-list">
-      <!-- JS ubacuje kartice -->
-    </div>
+    <div id="jobs-list" class="jobs-list"></div>
+
     <p id="no-results" class="no-results hidden">
       Trenutno nema oglasa za taj filter. Probaj da proširiš pretragu.
     </p>
   </section>
 
-  <!-- SEKCIJA DRŽAVE -->
+  <!-- ========================= -->
+  <!-- DRŽAVE -->
+  <!-- ========================= -->
   <section class="section" id="countries">
     <h2>Gdje tražimo poslove</h2>
     <p class="section-subtitle">
@@ -142,7 +148,9 @@
     </div>
   </section>
 
+  <!-- ========================= -->
   <!-- KONTAKT / PRIJAVA -->
+  <!-- ========================= -->
   <section class="contact-section" id="contact">
     <div class="container">
       <h2 class="section-title">Kontakt / Prijava</h2>
@@ -151,7 +159,7 @@
       </p>
 
       <div class="contact-grid">
-        <!-- Tražim posao -->
+        <!-- RADNIK -->
         <div class="contact-card">
           <h3>Tražim posao u Njemačkoj</h3>
           <p class="card-subtitle">Za kandidate</p>
@@ -198,9 +206,9 @@
           </form>
         </div>
 
-        <!-- Trebam radnika -->
+        <!-- KOMPANIJA -->
         <div class="contact-card">
-          <h3>Trebam radnik (firma / poslodavac)</h3>
+          <h3>Trebam radnike (firma / poslodavac)</h3>
           <p class="card-subtitle">Za firme</p>
           <form class="contact-form" id="company-form">
             <div class="form-group">
@@ -248,8 +256,7 @@
 
       <div class="contact-extra">
         <p class="contact-whatsapp">
-          📲 Direktni kontakt (WhatsApp): <strong>+38269200250</strong> (primjer – zamijeni
-          tvojim)
+          📲 Direktni kontakt (WhatsApp): <strong>+38269200250</strong>
         </p>
         <p class="contact-note">
           Mi nismo poslodavac – povezujemo radnike i firme, i pomažemo da obje strane
@@ -259,7 +266,9 @@
     </div>
   </section>
 
-  <!-- ADMIN DASHBOARD (radnici + firme) – SKRIVEN DOK SE NE ULOGUJEŠ -->
+  <!-- ========================= -->
+  <!-- ADMIN PANEL (radnici + firme) -->
+  <!-- ========================= -->
   <section id="admin" class="section admin-section hidden">
     <div class="section-inner">
       <div class="admin-header">
@@ -271,7 +280,7 @@
       </div>
 
       <div class="admin-layout">
-        <!-- Sidebar metric cards -->
+        <!-- SIDEBAR METRIKE -->
         <aside class="admin-sidebar">
           <div class="admin-card metric-card">
             <p class="metric-label">Ukupno prijava</p>
@@ -298,15 +307,15 @@
           </div>
         </aside>
 
-        <!-- Main dashboard area -->
+        <!-- MAIN -->
         <div class="admin-main">
-          <!-- Tabs -->
+          <!-- TABOVI -->
           <div class="admin-tabs">
             <button class="admin-tab active" data-tab="workers">Prijave radnika</button>
             <button class="admin-tab" data-tab="companies">Prijave kompanija</button>
           </div>
 
-          <!-- Search & filters -->
+          <!-- FILTERI -->
           <div class="admin-filters">
             <div class="admin-search">
               <input type="text" id="admin-search" placeholder="Pretraži ime, grad, poziciju..." />
@@ -319,13 +328,13 @@
             </select>
           </div>
 
-          <!-- Export dugmad -->
+          <!-- EXPORT -->
           <div class="admin-export">
             <button id="export-workers" class="export-btn">Export radnika (CSV)</button>
             <button id="export-companies" class="export-btn">Export kompanija (CSV)</button>
           </div>
 
-          <!-- Workers table -->
+          <!-- TABELA RADNIKA -->
           <div class="admin-table-wrapper" data-panel="workers">
             <table class="admin-table">
               <thead>
@@ -374,7 +383,7 @@
             </table>
           </div>
 
-          <!-- Companies table -->
+          <!-- TABELA KOMPANIJA -->
           <div class="admin-table-wrapper hidden" data-panel="companies">
             <table class="admin-table">
               <thead>
@@ -423,7 +432,7 @@
             </table>
           </div>
 
-          <!-- Chat / bilješke -->
+          <!-- CHAT / BILJEŠKE -->
           <div class="admin-chat" id="admin-chat">
             <div class="chat-header">
               <div>
@@ -451,7 +460,9 @@
     </div>
   </section>
 
-  <!-- ADMIN ZONA – oglasi za poslove (dodavanje poslova) – SKRIVENA DOK SE NE ULOGUJEŠ -->
+  <!-- ========================= -->
+  <!-- ADMIN – OGLASI ZA POSAO -->
+  <!-- ========================= -->
   <section class="section alt hidden" id="admin-jobs">
     <h2>Admin – oglasi za posao</h2>
     <p class="section-subtitle">
@@ -497,12 +508,14 @@
     </div>
   </section>
 
+  <!-- ========================= -->
+  <!-- FOOTER -->
+  <!-- ========================= -->
   <footer class="footer">
     © PosloviDE – Sva prava zadržana
   </footer>
 
-  <!-- verzija JS-a da razbije keš -->
-  <script src="script.js?v=2"></script>
+  <!-- SCRIPT -->
+  <script src="script.js?v=10"></script>
 </body>
 </html>
-
