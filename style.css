@@ -859,3 +859,95 @@ a {
     display: flex;
   }
 }
+/* ============================
+   ADMIN – oglasi za posao (forma)
+   ============================ */
+
+#admin-jobs .admin-panel {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: rgba(15, 23, 42, 0.96);
+  border-radius: 18px;
+  border: 1px solid #1f2937;
+  padding: 1.5rem 1.75rem 1.75rem;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+
+#admin-jobs .admin-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+#admin-jobs .admin-form {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+/* inputi / select / textarea unutar forme */
+#admin-jobs .admin-form input,
+#admin-jobs .admin-form select,
+#admin-jobs .admin-form textarea {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid #374151;
+  background: #020617;
+  padding: 9px 11px;
+  color: #e5e7eb;
+  font-size: 0.9rem;
+}
+
+#admin-jobs .admin-form input::placeholder,
+#admin-jobs .admin-form textarea::placeholder {
+  color: #6b7280;
+}
+
+/* opis posla – cijeli red */
+#admin-jobs .admin-form textarea#job-description {
+  grid-column: 1 / -1;
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* dugme "Dodaj posao" – cijeli red ispod */
+#admin-jobs #add-job {
+  grid-column: 1 / -1;
+  justify-self: flex-start;
+  border-radius: 999px;
+  padding: 0.6rem 1.3rem;
+  background: linear-gradient(90deg, #0ea5e9, #2563eb);
+  color: #f9fafb;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#admin-jobs #add-job:hover {
+  filter: brightness(1.08);
+}
+
+/* naslov "Svi tvoji oglasi" */
+#admin-jobs .admin-jobs-list {
+  margin-top: 0.75rem;
+}
+
+#admin-jobs .admin-jobs-list h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* responsive – na manjim ekranima 2 kolone / 1 kolona */
+@media (max-width: 900px) {
+  #admin-jobs .admin-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  #admin-jobs .admin-form {
+    grid-template-columns: 1fr;
+  }
+}
