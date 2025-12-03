@@ -92,7 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const filtered = jobs.filter((job) => {
       const matchesCountry =
-        country === 'all' || job.country.toLowerCase() === country.toLowerCase();
+        country === 'all' ||
+        job.country.toLowerCase() === country.toLowerCase();
 
       const text =
         (job.title + job.company + job.location + job.description).toLowerCase();
@@ -126,7 +127,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Klik na "Zahtjev / prijava" – skrol na kontakt formu
   document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.job-apply-btn');
+    const target = e.target;
+    if (!(target instanceof Element)) return;
+
+    const btn = target.closest('.job-apply-btn');
     if (!btn) return;
 
     const contactSection = document.getElementById('contact');
@@ -269,13 +273,19 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem(key, JSON.stringify(notes));
   }
 
+  // DELEGACIJA KLIKOVA U ADMIN TABELAMA
   document.addEventListener('click', (e) => {
-    const row = e.target.closest('.admin-table tbody tr');
+    const target = e.target;
+    if (!(target instanceof Element)) return;
+
+    // 1) Klik na red – selekcija
+    const row = target.closest('.admin-table tbody tr');
     if (row) {
       setSelectedRow(row);
     }
 
-    const actionBtn = e.target.closest('.action-btn');
+    // 2) Klik na dugmad za status
+    const actionBtn = target.closest('.action-btn');
     if (!actionBtn) return;
 
     const tr = actionBtn.closest('tr');
@@ -301,11 +311,17 @@ document.addEventListener('DOMContentLoaded', () => {
     recalcMetrics();
   });
 
+  // CHAT – SLANJE BILJEŠKI
   if (chatFormEl && chatInputEl) {
     chatFormEl.addEventListener('submit', (e) => {
       e.preventDefault();
       const text = chatInputEl.value.trim();
-      if (!text || !selectedRowId) return;
+      if (!text) return;
+
+      if (!selectedRowId) {
+        alert('Prvo odaberi prijavu iz tabele.');
+        return;
+      }
 
       saveNoteForSelected(text);
       chatInputEl.value = '';
@@ -313,256 +329,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // =========================
-  // 5. ADMIN – SEARCH / FILTER
-  // =========================
-
-  const adminSearchEl = document.getElementById('admin-search');
-  const adminStatusFilterEl = document.getElementById('admin-status-filter');
-
-  function filterAdminTables() {
-    const term = (adminSearchEl?.value || '').toLowerCase();
-    const statusFilter = adminStatusFilterEl?.value || 'all';
-
-    const allRows = document.querySelectorAll('.admin-table tbody tr');
-    allRows.forEach((row) => {
-      const status = row.dataset.status || 'new';
-      const text = row.textContent.toLowerCase();
-
-      const matchesStatus = statusFilter === 'all' || status === statusFilter;
-      const matchesTerm = !term || text.includes(term);
-
-      row.style.display = matchesStatus && matchesTerm ? '' : 'none';
-    });
-  }
-
-  if (adminSearchEl) adminSearchEl.addEventListener('input', filterAdminTables);
-  if (adminStatusFilterEl)
-    adminStatusFilterEl.addEventListener('change', filterAdminTables);
-
-  // =========================
-  // 6. EXPORT CSV (radnici / firme)
-  // =========================
-
-  function tableToCSV(tableEl) {
-    const rows = Array.from(tableEl.querySelectorAll('tr'));
-    return rows
-      .map((row) => {
-        const cells = Array.from(row.querySelectorAll('th, td'));
-        return cells
-          .map((cell) => `"${(cell.textContent || '').replace(/"/g, '""')}"`)
-          .join(',');
-      })
-      .join('\n');
-  }
-
-  function downloadCSV(filename, csvText) {
-    const blob = new Blob([csvText], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
-  const exportWorkersBtn = document.getElementById('export-workers');
-  const exportCompaniesBtn = document.getElementById('export-companies');
-
-  if (exportWorkersBtn && workersTableBody) {
-    exportWorkersBtn.addEventListener('click', () => {
-      const table = workersTableBody.closest('table');
-      if (!table) return;
-      const csv = tableToCSV(table);
-      downloadCSV('radnici.csv', csv);
-    });
-  }
-
-  if (exportCompaniesBtn && companiesTableBody) {
-    exportCompaniesBtn.addEventListener('click', () => {
-      const table = companiesTableBody.closest('table');
-      if (!table) return;
-      const csv = tableToCSV(table);
-      downloadCSV('kompanije.csv', csv);
-    });
-  }
-
-  // =========================
-  // 7. FORMULARI – FORMSPREE
-  // =========================
-
-  const workerForm = document.getElementById('worker-form');
-  const workerMessage = document.getElementById('worker-message');
-  const companyForm = document.getElementById('company-form');
-  const companyMessage = document.getElementById('company-message');
-
-  async function sendToFormspree(payload, messageBox) {
-    const endpoint = 'https://formspree.io/f/xkgdbqnj';
-
-    try {
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
-
-      if (response.ok) {
-        if (messageBox) {
-          messageBox.textContent = '✅ Uspješno poslato! Javićemo ti se uskoro.';
-          messageBox.classList.remove('error');
-          messageBox.classList.add('success');
-        }
-      } else {
-        if (messageBox) {
-          messageBox.textContent =
-            '❌ Greška pri slanju. Pokušaj ponovo ili piši direktno na WhatsApp.';
-          messageBox.classList.remove('success');
-          messageBox.classList.add('error');
-        }
-      }
-    } catch (err) {
-      if (messageBox) {
-        messageBox.textContent =
-          '❌ Greška u mreži. Provjeri internet pa pokušaj ponovo.';
-        messageBox.classList.remove('success');
-        messageBox.classList.add('error');
-      }
-    }
-  }
-
-  if (workerForm) {
-    workerForm.addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const data = {
-        tip: 'kandidat',
-        ime: document.getElementById('worker-name')?.value || '',
-        telefon: document.getElementById('worker-phone')?.value || '',
-        email: document.getElementById('worker-email')?.value || '',
-        grad: document.getElementById('worker-city')?.value || '',
-        pozicija: document.getElementById('worker-position')?.value || '',
-        iskustvo: document.getElementById('worker-experience')?.value || ''
-      };
-
-      await sendToFormspree(data, workerMessage);
-      this.reset();
-      setTimeout(() => {
-        if (workerMessage) workerMessage.textContent = '';
-      }, 6000);
-    });
-  }
-
-  if (companyForm) {
-    companyForm.addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const data = {
-        tip: 'kompanija',
-        firma: document.getElementById('company-name')?.value || '',
-        kontakt_osoba: document.getElementById('company-person')?.value || '',
-        telefon: document.getElementById('company-phone')?.value || '',
-        email: document.getElementById('company-email')?.value || '',
-        grad: document.getElementById('company-city')?.value || '',
-        profil_radnika: document.getElementById('company-profile')?.value || ''
-      };
-
-      await sendToFormspree(data, companyMessage);
-      this.reset();
-      setTimeout(() => {
-        if (companyMessage) companyMessage.textContent = '';
-      }, 6000);
-    });
-  }
-
-  // =========================
-  // 8. MOBILNI MENI (hamburger)
-  // =========================
-
-  const navToggle = document.querySelector('.nav-toggle');
-  const navLinks = document.querySelector('.nav-links');
-
-  if (navToggle && navLinks) {
-    navToggle.addEventListener('click', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      navLinks.classList.toggle('nav-open');
-    });
-
-    // klik van menija zatvara meni
-    document.addEventListener('click', function (e) {
-      if (!navLinks.contains(e.target) && !navToggle.contains(e.target)) {
-        navLinks.classList.remove('nav-open');
-      }
-    });
-  }
-
-  // =========================
-  // 9. ADMIN LOGIN OVERLAY
-  // =========================
-
-  const adminOpenLink = document.getElementById('admin-open-link');
-  const adminLoginOverlay = document.getElementById('admin-login-overlay');
-  const adminLoginForm = document.getElementById('admin-login-form');
-  const adminSection = document.getElementById('admin');
-  const adminJobsSection = document.getElementById('admin-jobs');
-  const adminLogoutBtn = document.getElementById('admin-logout');
-
-  function setAdminVisible(isVisible) {
-    if (!adminSection || !adminJobsSection) return;
-    if (isVisible) {
-      adminSection.classList.remove('hidden');
-      adminJobsSection.classList.remove('hidden');
-    } else {
-      adminSection.classList.add('hidden');
-      adminJobsSection.classList.add('hidden');
-    }
-  }
-
-  // inicijalno – provjeri localStorage
-  if (localStorage.getItem('posloviDE_admin') === 'true') {
-    setAdminVisible(true);
-  } else {
-    setAdminVisible(false);
-  }
-
-  if (adminOpenLink && adminLoginOverlay) {
-    adminOpenLink.addEventListener('click', function (e) {
-      e.preventDefault();
-      adminLoginOverlay.classList.add('active');
-    });
-
-    // klik na pozadinu zatvara
-    adminLoginOverlay.addEventListener('click', function (e) {
-      if (e.target === adminLoginOverlay) {
-        adminLoginOverlay.classList.remove('active');
-      }
-    });
-  }
-
-  if (adminLoginForm) {
-    adminLoginForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-      const username = document
-        .getElementById('admin-username')
-        ?.value.trim();
-      const password = document
-        .getElementById('admin-password')
-        ?.value.trim();
-
-      if (username === 'admin' && password === '1234') {
-        localStorage.setItem('posloviDE_admin', 'true');
-        setAdminVisible(true);
-        if (adminLoginOverlay) adminLoginOverlay.classList.remove('active');
-      } else {
-        alert('Pogrešno korisničko ime ili lozinka.');
-      }
-    });
-  }
-
-  if (adminLogoutBtn) {
-    adminLogoutBtn.addEventListener('click', () => {
-      localStorage.removeItem('posloviDE_admin');
-      setAdminVisible(false);
-    });
+  // Opciono: automatski izaberi prvi red na početku
+  const firstRow = document.querySelector('.admin-table tbody tr');
+  if (firstRow) {
+    setSelectedRow(firstRow);
   }
 });
