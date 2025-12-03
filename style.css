@@ -939,3 +939,23 @@ a {
   margin-bottom: 0.75rem;
   font-size: 1rem;
 }
+/* MOBILNI – admin dodaj novi posao */
+@media (max-width: 768px) {
+  #admin-jobs .admin-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  #admin-jobs .admin-form input,
+  #admin-jobs .admin-form select,
+  #admin-jobs .admin-form textarea,
+  #admin-jobs .admin-form button {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    font-size: 0.9rem;
+  }
+}
