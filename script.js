@@ -333,5 +333,38 @@ document.addEventListener('DOMContentLoaded', () => {
   const firstRow = document.querySelector('.admin-table tbody tr');
   if (firstRow) {
     setSelectedRow(firstRow);
+    // =========================
+  // 5. NAVIGACIJA – HAMBURGER
+  // =========================
+
+  const navToggle =
+    document.querySelector('[data-nav-toggle]') ||
+    document.querySelector('.nav-toggle') ||
+    document.querySelector('#nav-toggle');
+
+  const navMenu =
+    document.querySelector('[data-nav-menu]') ||
+    document.querySelector('.nav-menu') ||
+    document.querySelector('.mobile-nav') ||
+    document.querySelector('.site-nav');
+
+  if (navToggle && navMenu) {
+    navToggle.addEventListener('click', () => {
+      const isOpen = navMenu.classList.toggle('open');
+      navToggle.classList.toggle('open', isOpen);
+      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    // Zatvori meni kad klikneš na neki link
+    navMenu.addEventListener('click', (e) => {
+      const target = e.target;
+      if (!(target instanceof Element)) return;
+      if (target.matches('a')) {
+        navMenu.classList.remove('open');
+        navToggle.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
   }
 });
