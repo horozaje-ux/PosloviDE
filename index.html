@@ -5,69 +5,67 @@
   <title>PosloviDE – Posao u Njemačkoj bez muke</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="manifest.json" />
 </head>
 
 <body>
 
-  <!-- ========================= -->
-  <!-- HEADER / NAVIGATION -->
-  <!-- ========================= -->
+  <!-- ADMIN LOGIN OVERLAY -->
+  <div id="admin-login-overlay" class="admin-login-overlay hidden">
+    <div class="admin-login-box">
+      <h2>Admin prijava</h2>
+      <p class="admin-login-hint">Demo: <strong>admin / 1234</strong></p>
 
+      <form id="admin-login-form">
+        <label>Korisničko ime
+          <input type="text" id="admin-username" required />
+        </label>
+
+        <label>Lozinka
+          <input type="password" id="admin-password" required />
+        </label>
+
+        <button type="submit">Prijava</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
   <header class="top-bar">
     <div class="logo">
       Poslovi<span>DE</span> <span class="flag">🇩🇪</span>
     </div>
 
-    <!-- HAMBURGER DUGME -->
-    <button class="nav-toggle" aria-label="Otvori meni" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
+    <button class="nav-toggle">
+      <span></span><span></span><span></span>
     </button>
 
-    <!-- NAV LINKOVI -->
     <nav class="nav-links">
       <a href="#jobs">Poslovi</a>
       <a href="#countries">Države</a>
       <a href="#contact">Kontakt</a>
-      <a href="#admin">Admin</a>
+      <a href="#" id="admin-open-link">Admin</a>
     </nav>
   </header>
 
-  <!-- ========================= -->
   <!-- HERO -->
-  <!-- ========================= -->
-
-  <section class="hero" id="top">
+  <section class="hero">
     <div class="hero-content">
       <h1>Posao u Njemačkoj bez muke</h1>
-      <p>
-        Prijavi se online, mi te povezujemo sa provjerenim firmama u Njemačkoj, Austriji,
-        Švajcarskoj, Belgiji i Luksemburgu.
-      </p>
-
+      <p>Prijavi se online – mi te povezujemo sa provjerenim firmama.</p>
       <div class="hero-badges">
-        <span>✅ Smještaj često obezbijeđen</span>
-        <span>✅ Satnica od 13–25€</span>
-        <span>✅ Poslovi u građevini, proizvodnji, logistici…</span>
+        <span>Smještaj obezbijeđen</span>
+        <span>Satnica 13–25€</span>
+        <span>Firme širom EU</span>
       </div>
     </div>
   </section>
 
-  <!-- ========================= -->
   <!-- POSLOVI -->
-  <!-- ========================= -->
-
-  <section class="section alt" id="jobs">
+  <section id="jobs" class="section alt">
     <h2>Aktuelni poslovi</h2>
-    <p class="section-subtitle">
-      Filtriraj poslove po državi ili pretraži po nazivu firme, gradu ili poziciji.
-    </p>
 
-    <!-- FILTERI -->
     <div class="jobs-filters">
-      <input type="text" id="search-input" placeholder="Pretraga (firma, grad, pozicija)…" />
+      <input type="text" id="search-input" placeholder="Pretraga…" />
       <select id="country-filter">
         <option value="all">Sve države</option>
         <option value="Njemačka">🇩🇪 Njemačka</option>
@@ -76,187 +74,105 @@
         <option value="Belgija">🇧🇪 Belgija</option>
         <option value="Luksemburg">🇱🇺 Luksemburg</option>
       </select>
-      <button id="filter-reset">Reset filtera</button>
+      <button id="filter-reset">Reset</button>
     </div>
 
     <div id="jobs-list" class="jobs-list"></div>
-
-    <p id="no-results" class="no-results hidden">
-      Trenutno nema oglasa za taj filter. Probaj da proširiš pretragu.
-    </p>
+    <p id="no-results" class="no-results hidden">Nema rezultata.</p>
   </section>
 
-  <!-- ========================= -->
   <!-- DRŽAVE -->
-  <!-- ========================= -->
-
-  <section class="section" id="countries">
-    <h2>Gdje tražimo poslove</h2>
-    <p class="section-subtitle">
-      Fokus nam je na njemačkom govornom području i zemljama gdje naša dijaspora najviše radi.
-    </p>
+  <section id="countries" class="section">
+    <h2>Gdje radimo</h2>
 
     <div class="countries-grid">
-      <div class="country-card">
-        <div class="country-flag">🇩🇪</div>
-        <h3>Njemačka</h3>
-        <p>Građevina, magacin, proizvodnja, ugostiteljstvo…</p>
-      </div>
-
-      <div class="country-card">
-        <div class="country-flag">🇦🇹</div>
-        <h3>Austrija</h3>
-        <p>Hoteli, ski centri, sezonski i stalni poslovi.</p>
-      </div>
-
-      <div class="country-card">
-        <div class="country-flag">🇨🇭</div>
-        <h3>Švajcarska</h3>
-        <p>Bolje plate, strožiji uslovi – biramo ozbiljne firme.</p>
-      </div>
-
-      <div class="country-card">
-        <div class="country-flag">🇧🇪</div>
-        <h3>Belgija</h3>
-        <p>Magacini, dostava, logistika i proizvodnja.</p>
-      </div>
-
-      <div class="country-card">
-        <div class="country-flag">🇱🇺</div>
-        <h3>Luksemburg</h3>
-        <p>Mala država, jake plate – limited ponuda.</p>
-      </div>
+      <div class="country-card"><div class="country-flag">🇩🇪</div>Njemačka</div>
+      <div class="country-card"><div class="country-flag">🇦🇹</div>Austrija</div>
+      <div class="country-card"><div class="country-flag">🇨🇭</div>Švajcarska</div>
+      <div class="country-card"><div class="country-flag">🇧🇪</div>Belgija</div>
+      <div class="country-card"><div class="country-flag">🇱🇺</div>Luksemburg</div>
     </div>
   </section>
 
-  <!-- ========================= -->
   <!-- KONTAKT -->
-  <!-- ========================= -->
-
-  <section class="contact-section" id="contact">
+  <section id="contact" class="contact-section">
     <div class="container">
       <h2 class="section-title">Kontakt / Prijava</h2>
-      <p class="section-subtitle">
-        Ispuni prijavu – javi nam šta tražiš, a mi te povezujemo sa firmama.
-      </p>
 
       <div class="contact-grid">
 
         <!-- RADNICI -->
         <div class="contact-card">
-          <h3>Tražim posao u Njemačkoj</h3>
+          <h3>Tražim posao</h3>
           <form id="worker-form" class="contact-form">
-            <div class="two-cols">
-              <div class="form-group">
-                <label>Ime i prezime</label>
-                <input id="worker-name" required />
-              </div>
-              <div class="form-group">
-                <label>Telefon</label>
-                <input id="worker-phone" required />
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>Područje rada</label>
-              <input id="worker-position" />
-            </div>
-
-            <button type="submit" class="btn-primary full-width">Pošalji prijavu</button>
-            <p class="form-message" id="worker-message"></p>
+            <input id="worker-name" placeholder="Ime i prezime" required />
+            <input id="worker-phone" placeholder="Telefon" required />
+            <input id="worker-email" type="email" placeholder="Email (opciono)" />
+            <input id="worker-city" placeholder="Država / grad" />
+            <input id="worker-position" placeholder="Pozicija" />
+            <textarea id="worker-experience" placeholder="Iskustvo"></textarea>
+            <button type="submit" class="btn-primary full-width">Pošalji</button>
+            <p id="worker-message" class="form-message"></p>
           </form>
         </div>
 
         <!-- FIRME -->
         <div class="contact-card">
-          <h3>Trebam radnike (firma)</h3>
+          <h3>Trebam radnike</h3>
           <form id="company-form" class="contact-form">
-            <div class="form-group">
-              <label>Naziv firme</label>
-              <input id="company-name" required />
-            </div>
-
-            <button type="submit" class="btn-secondary full-width">Pošalji upit</button>
-            <p class="form-message" id="company-message"></p>
+            <input id="company-name" placeholder="Naziv firme" required />
+            <input id="company-person" placeholder="Kontakt osoba" required />
+            <input id="company-phone" placeholder="Telefon" required />
+            <input id="company-email" placeholder="Email" type="email" />
+            <input id="company-city" placeholder="Lokacija" />
+            <textarea id="company-profile" placeholder="Opis posla"></textarea>
+            <button type="submit" class="btn-secondary full-width">Pošalji</button>
+            <p id="company-message" class="form-message"></p>
           </form>
         </div>
-
       </div>
-
-      <p class="contact-whatsapp">
-        📲 WhatsApp kontakt: <strong>+38269200250</strong>
-      </p>
 
     </div>
   </section>
 
-  <!-- ========================= -->
   <!-- ADMIN PANEL -->
-  <!-- ========================= -->
+  <section id="admin" class="section admin-section hidden">
+    <h2 class="section-title">Admin panel</h2>
 
-  <section id="admin" class="section admin-section">
-    <div class="section-inner">
-
-      <h2 class="section-title">Admin panel</h2>
-
-      <div class="admin-layout">
-
-        <aside class="admin-sidebar">
-          <div class="admin-card metric-card">
-            <p class="metric-label">Ukupno prijava</p>
-            <p class="metric-value" id="metric-total">0</p>
-          </div>
-        </aside>
-
-        <div class="admin-main">
-
-          <div class="admin-tabs">
-            <button class="admin-tab active" data-tab="workers">Prijave radnika</button>
-            <button class="admin-tab" data-tab="companies">Prijave kompanija</button>
-          </div>
-
-          <div class="admin-table-wrapper" data-panel="workers">
-            <table class="admin-table">
-              <tbody>
-                <tr data-id="static-worker-1" data-status="new">
-                  <td>Marko Jovanović</td>
-                  <td>Podgorica</td>
-                  <td>Monter</td>
-                  <td><span class="status-badge status-new">Novo</span></td>
-                  <td>
-                    <button class="action-btn action-progress">Kontaktiran</button>
-                    <button class="action-btn action-done">Završeno</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="admin-chat">
-            <p id="chat-target">Nijedna prijava nije izabrana.</p>
-            <div id="chat-messages" class="chat-body"></div>
-            <form id="chat-form" class="chat-form">
-              <input id="chat-input" placeholder="Upiši bilješku..." />
-              <button type="submit">Pošalji</button>
-            </form>
-          </div>
-
-        </div>
-
-      </div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-tab="workers">Radnici</button>
+      <button class="admin-tab" data-tab="companies">Kompanije</button>
     </div>
+
+    <div class="admin-table-wrapper" data-panel="workers">
+      <table class="admin-table">
+        <thead><tr><th>Ime</th><th>Grad</th><th>Pozicija</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr data-id="static-1" data-status="new">
+            <td>Marko</td><td>Podgorica</td><td>Zidar</td>
+            <td><span class="status-badge status-new">Novo</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="admin-table-wrapper hidden" data-panel="companies">
+      <table class="admin-table">
+        <thead><tr><th>Firma</th><th>Grad</th><th>Pozicija</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr data-id="c1" data-status="new">
+            <td>Firma SD</td><td>Köln</td><td>Monteri</td>
+            <td><span class="status-badge status-new">Novo</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button id="admin-logout" class="btn-secondary" style="margin-top:20px;">Odjava</button>
   </section>
 
-  <!-- ========================= -->
-  <!-- FOOTER -->
-  <!-- ========================= -->
+  <footer class="footer">© PosloviDE</footer>
 
-  <footer class="footer">
-    © PosloviDE – Sva prava zadržana
-  </footer>
-
-  <!-- SCRIPT -->
-  <script src="script.js?v=5"></script>
-
+  <script src="script.js?v=10"></script>
 </body>
 </html>
