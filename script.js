@@ -431,7 +431,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (adminLoginForm && adminUsernameInput && adminPasswordInput) {
     const ADMIN_USER = 'admin';
-    const ADMIN_PASS = '1234';
+    const ADMIN_PASS = 'sansa123';
 
     adminLoginForm.addEventListener('submit', (e) => {
       e.preventDefault();
